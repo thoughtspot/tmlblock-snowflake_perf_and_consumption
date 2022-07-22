@@ -95,8 +95,8 @@ Log into your ThoughtSpot instance and create an Embrace connection to each of t
 - WAREHOUSE_METERING_HISTORY
 
 ## Import TML Blocks 
-Import the TML for the worksheets(snowflake_tmlblocks_worksheets) and verify that it has all been imported without any errors.
-Import the TML for the liveboards(snowflake_tmlblocks_liveboards) and verify that it has all been imported without any errors.
+1) Import the TML for the worksheets(snowflake_tmlblocks_worksheets) and verify that it has all been imported without any errors.
+2) Afterwards, import the TML for the liveboards(snowflake_tmlblocks_liveboards) and verify that it has all been imported without any errors.
 
 # Query Performance Considerations 
 
