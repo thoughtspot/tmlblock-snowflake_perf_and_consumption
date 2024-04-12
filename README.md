@@ -26,70 +26,50 @@ snowflake_tmlblocks_liveboards.zip
 - Snowflake Warehouse Consumption: which warehouses are consuming credits?
 - Snowflake Storage
 
-# Installation Instructions 
+# Snowflake Performance and Consumption SpotApp - Prerequisites
 
-## Snowflake Set Up Instructions 
-By default, Snowflake.Account_Usage is limited to the role ACCOUNTADMIN
-Grant permission for the following views to role defined in Embrace Connection
-- DATABASE_STORAGE_USAGE_HISTORY
-- QUERY_HISTORY
-- STAGES
-- STORAGE_USAGE
-- WAREHOUSE_METERING_HISTORY
+Before deploying the Snowflake Performance and Consumption SpotApp, ensure the following prerequisites are met:
 
-## Snowflake Grant Role Example 
-Change <EXAMPLE_Role> to role of your choosing. 
-### GRANT Usage to Embrace User
+## Review and Sync Data
+
+- **Review Required Data**: Confirm that your columns match the required column type listed in the SpotApp schema.
+- **Sync Data**: Sync all necessary tables and columns from Snowflake to your cloud data warehouse (CDW). While it's possible to sync only required tables and columns, ThoughtSpot recommends syncing all tables and columns for comprehensive integration.
+
+## Credentials and Permissions
+
+- **Snowflake Credentials**: Obtain credentials and SYSADMIN privileges to access your Snowflake environment which should contain the data used by ThoughtSpot to create Answers, Liveboards, and Worksheets.
+- **Unique Connection Name**: Each SpotApp connection must have a unique name.
+- **Access Requirements**:
+  - ACCOUNTADMIN access to Snowflake.
+  - Access to the SNOWFLAKE database in your Snowflake environment.
+  - Access to specific Snowflake tables: `DATABASE_STORAGE_USAGE_HISTORY`, `QUERY_HISTORY`, `STAGES`, `STORAGE_USAGE`, `WAREHOUSE_METERING_HISTORY`.
+
+## SQL Setup
+
+You can set up the SpotApp using one of two options. Run the required SQL commands in your cloud data warehouse based on your chosen option:
+
+### Option 1: Fast Performance
+
+This option involves copying data from the SNOWFLAKE database to a different database using Snowflake tasks.
+
+#### SQL Commands for Option 1
 
 ```sql
-GRANT USAGE ON DATABASE "SNOWFLAKE" TO ROLE <EXAMPLE_Role>;  
-GRANT USAGE ON SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <EXAMPLE_Role>;  
-GRANT SELECT ON DATABASE_STORAGE_USAGE_HISTORY IN SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <EXAMPLE_Role>;  
+CREATE DATABASE "SNOWFLAKE_USAGE_TS";
+CREATE SCHEMA "SNOWFLAKE_USAGE_TS"."SNOWFLAKE";
+-- Add tasks for each table like QUERY_HISTORY, WAREHOUSE_METERING_HISTORY, etc.
+-- Replace <YOUR_WAREHOUSE> with your specific information.
 
-```
+### Option 2: Direct Query
 
-### GRANT SELECT ON QUERY_HISTORY IN SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE PMM_ROLE
+This option involves querying the system database directly, which may be slower and more expensive.
 
+#### SQL Commands for Option 2
 
-GRANT SELECT ON STAGES IN SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <EXAMPLE_Role>;  
-GRANT SELECT ON STORAGE_USAGE IN SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <EXAMPLE_Role>;  
-GRANT SELECT ON WAREHOUSE_METERING_HISTORY IN SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <EXAMPLE_Role>; 
-
-### Replicate the QUERY_HISTORY to a local table for Performance
-
-
-GRANT USAGE ON DATABASE "SNOWFLAKE_USAGE_TS" TO ROLE <EXAMPLE_Role>;  
-GRANT USAGE ON SCHEMA "SNOWFLAKE_USAGE_TS"."ACCOUNT_USAGE" TO ROLE <EXAMPLE_Role>;  
-GRANT SELECT ON QUERY_HISTORY IN SCHEMA "SNOWFLAKE_USAGE_TS"."ACCOUNT_USAGE" TO <EXAMPLE_Role>;  
-
-## Copy the Database 
-
-Change <database_name> and <schema_name>. to your choosing. 
-
-DATABASE_STORAGE_USAGE_HISTORY:
-
-`create or replace view <database_name>.<schema_name>.DATABASE_STORAGE_USAGE_HISTORY as
-select * from SNOWFLAKE.ACCOUNT_USAGE.DATABASE_STORAGE_USAGE_HISTORY;`  
-
-QUERY_HISTORY:
-
-`create or replace view <database_name>.<schema_name>.QUERY_HISTORY as
-select * from SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY;`  
-
-STAGES:
-
-`create or replace view <database_name>.<schema_name>.STAGES  as
-select * from SNOWFLAKE.ACCOUNT_USAGE.STAGES;`  
-
-STORAGE_USAGE :
-
-`create or replace view <database_name>.<schema_name>.STORAGE_USAGE as
-select * from SNOWFLAKE.ACCOUNT_USAGE.STORAGE_USAGE;`. 
-
-WAREHOUSE_METERING_HISTORY:
-
-`create or replace view <database_name>.<schema_name>.WAREHOUSE_METERING_HISTORY as
-select * from SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY;`. 
+```sql
+GRANT USAGE ON DATABASE "SNOWFLAKE" TO ROLE <YOUR_ROLE>;
+GRANT USAGE ON SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <YOUR_ROLE>;
+-- Add SELECT permissions for each required table.
 
 
 ## Connect Thoughtspot and Snowflake
