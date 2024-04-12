@@ -1,0 +1,58 @@
+SpotApp table;SpotApp columns;SpotApp column datatype;SpotApp column description;SpotApp mandatory column
+DATABASE_STORAGE_USAGE_HISTORY;AVERAGE_DATABASE_BYTES;DOUBLE;This is to map the column AVERAGE_DATABASE_BYTES;No
+DATABASE_STORAGE_USAGE_HISTORY;AVERAGE_FAILSAFE_BYTES;DOUBLE;This is to map the column AVERAGE_FAILSAFE_BYTES;No
+DATABASE_STORAGE_USAGE_HISTORY;DATABASE_ID;INT64;Internal/system-generated identifier for the database.;No
+DATABASE_STORAGE_USAGE_HISTORY;DATABASE_NAME;VARCHAR;Name of the database.;No
+DATABASE_STORAGE_USAGE_HISTORY;DELETED;DATE_TIME;This is to map the column DELETED;No
+DATABASE_STORAGE_USAGE_HISTORY;USAGE_DATE;DATE;Date of this storage usage record. The date is based on the UTC time zone.;No
+QUERY_HISTORY;BYTES_SPILLED_TO_LOCAL_STORAGE;INT64;This is to map the column BYTES_SPILLED_TO_LOCAL_STORAGE;No
+QUERY_HISTORY;BYTES_SPILLED_TO_REMOTE_STORAGE;INT64;This is to map the column BYTES_SPILLED_TO_REMOTE_STORAGE;No
+QUERY_HISTORY;COMPILATION_TIME;INT64;This is to map the column COMPILATION_TIME;No
+QUERY_HISTORY;DATABASE_ID;INT64;Internal/system-generated identifier for the database that was in use.;No
+QUERY_HISTORY;DATABASE_NAME;VARCHAR;Database that was in use at the time of the query.;No
+QUERY_HISTORY;ERROR_CODE;VARCHAR;Error code, if the query returned an error;No
+QUERY_HISTORY;ERROR_MESSAGE;VARCHAR;Error message, if the query returned an error;No
+QUERY_HISTORY;EXECUTION_STATUS;VARCHAR;Execution status for the query: success, fail, incident.;No
+QUERY_HISTORY;EXECUTION_TIME;INT64;This is to map the column EXECUTION_TIME;No
+QUERY_HISTORY;PARTITIONS_SCANNED;INT64;This is to map the column PARTITIONS_SCANNED;No
+QUERY_HISTORY;PARTITIONS_TOTAL;INT64;This is to map the column PARTITIONS_TOTAL;No
+QUERY_HISTORY;PERCENTAGE_SCANNED_FROM_CACHE;DOUBLE;This is to map the column PERCENTAGE_SCANNED_FROM_CACHE;No
+QUERY_HISTORY;QUERY_ID;VARCHAR;This is to map the column QUERY_ID;No
+QUERY_HISTORY;QUERY_TAG;VARCHAR;Query tag set for this statement through the QUERY_TAG session parameter.;No
+QUERY_HISTORY;QUERY_TEXT;VARCHAR;This is to map the column QUERY_TEXT;No
+QUERY_HISTORY;QUERY_TYPE;VARCHAR;DML, query, etc. If the query is currently running, or the query failed, then the query type may be UNKNOWN.;No
+QUERY_HISTORY;QUEUED_OVERLOAD_TIME;INT64;This is to map the column QUEUED_OVERLOAD_TIME;No
+QUERY_HISTORY;QUEUED_PROVISIONING_TIME;INT64;This is to map the column QUEUED_PROVISIONING_TIME;No
+QUERY_HISTORY;QUEUED_REPAIR_TIME;INT64;This is to map the column QUEUED_REPAIR_TIME;No
+QUERY_HISTORY;ROLE_NAME;VARCHAR;Role that was active in the session at the time of the query.;No
+QUERY_HISTORY;ROWS_PRODUCED;INT64;Number of rows produced by this statement.;No
+QUERY_HISTORY;SCHEMA_ID;INT64;Internal/system-generated identifier for the schema that was in use.;No
+QUERY_HISTORY;SCHEMA_NAME;VARCHAR;Schema that was in use at the time of the query.;No
+QUERY_HISTORY;SESSION_ID;INT64;Session that executed the statement.;No
+QUERY_HISTORY;START_TIME;DATE_TIME;Statement start time (in the UTC time zone);No
+QUERY_HISTORY;TOTAL_ELAPSED_TIME;INT64;This is to map the column TOTAL_ELAPSED_TIME;No
+QUERY_HISTORY;USER_NAME;VARCHAR;User who issued the query.;No
+QUERY_HISTORY;WAREHOUSE_ID;INT64;This is to map the column WAREHOUSE_ID;No
+QUERY_HISTORY;WAREHOUSE_NAME;VARCHAR;Warehouse that the query executed on, if any.;No
+QUERY_HISTORY;WAREHOUSE_SIZE;VARCHAR;This is to map the column WAREHOUSE_SIZE;No
+QUERY_HISTORY;WAREHOUSE_TYPE;VARCHAR;Type of the warehouse when this statement executed.;No
+STAGES;DELETED;DATE_TIME;This is to map the column DELETED;No
+STAGES;STAGE_CATALOG;VARCHAR;Database that the stage belongs to.;No
+STAGES;STAGE_CATALOG_ID;INT64;Internal/system-generated identifier for the database of the stage.;No
+STAGES;STAGE_ID;INT64;This is to map the column STAGE_ID;No
+STAGES;STAGE_NAME;VARCHAR;Name of the stage.;No
+STAGES;STAGE_OWNER;VARCHAR;Name of the role that owns the stage; NULL if it has been dropped.;No
+STAGES;STAGE_SCHEMA;VARCHAR;Schema that the stage belongs to.;No
+STAGES;STAGE_SCHEMA_ID;INT64;Internal/system-generated identifier for the schema of the stage.;No
+STAGES;STAGE_TYPE;VARCHAR;Type of stage (User, Table, Internal Named, or External Named).;No
+STORAGE_USAGE;FAILSAFE_BYTES;DOUBLE;This is to map the column FAILSAFE_BYTES;No
+STORAGE_USAGE;STAGE_BYTES;DOUBLE;This is to map the column STAGE_BYTES;No
+STORAGE_USAGE;STORAGE_BYTES;DOUBLE;This is to map the column STORAGE_BYTES;No
+STORAGE_USAGE;USAGE_DATE;DATE;This is to map the column USAGE_DATE;No
+WAREHOUSE_METERING_HISTORY;CREDITS_USED;DOUBLE;This is to map the column CREDITS_USED;No
+WAREHOUSE_METERING_HISTORY;CREDITS_USED_CLOUD_SERVICES;DOUBLE;Number of credits used for cloud services in the hour.;No
+WAREHOUSE_METERING_HISTORY;CREDITS_USED_COMPUTE;DOUBLE;Number of credits used for the warehouse in the hour.;No
+WAREHOUSE_METERING_HISTORY;END_TIME;DATE_TIME;This is to map the column END_TIME;No
+WAREHOUSE_METERING_HISTORY;START_TIME;DATE_TIME;The date and beginning of the hour (in the UTC time zone) in which the warehouse usage took place.;No
+WAREHOUSE_METERING_HISTORY;WAREHOUSE_ID;INT64;Internal/system-generated identifier for the warehouse.;No
+WAREHOUSE_METERING_HISTORY;WAREHOUSE_NAME;VARCHAR;Name of the warehouse.;No
