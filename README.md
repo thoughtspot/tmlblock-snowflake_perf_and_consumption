@@ -60,13 +60,13 @@ Before you can deploy the Snowflake Performance and Consumption SpotApp, you mus
 
 You can set up the SpotApp in one of two ways:
 
-### Option 1: Copy the data from the SNOWFLAKE database to a different database using Snowflake tasks.
+#### Option 1: Copy the data from the SNOWFLAKE database to a different database using Snowflake tasks.
 This option has faster performance and a customizable cost. Refer to Option 1 SQL commands.
 
-### Option 2: Query on the system database directly.
+#### Option 2: Query on the system database directly.
 This option has slower performance and may be more expensive. Refer to Option 2 SQL commands.
 
-#### Option 1
+### Option 1
 
 The following SQL commands grant permission for the role you use in your Snowflake connection to use the Snowflake database. They create a separate database and schema for the data in the Snowflake database, and create the tables with the data. Then, they grant permission for the role you use in your Snowflake connection to use the Snowflake database. Replace `<YOUR_ROLE>` and `<YOUR_WAREHOUSE>` with your specific information. The role should be either ACCOUNTADMIN or a custom SpotApps role. You can also modify the schedule. The following commands set the schedule to refresh the table data monthly. Changing the schedule may have performance and cost implications.
 
@@ -78,7 +78,7 @@ Make sure to be consistent in your SQL script. If you use double quotes as objec
 [Option 1 SQL Commands](https://github.com/thoughtspot/tmlblock-snowflake_perf_and_consumption/blob/main/Option1.sql)
 
 
-#### Option 2
+### Option 2
 
 The following SQL commands grant permission for the role you use in your Snowflake connection to use the Snowflake database. They prepare you to query on the system database directly. Replace YOUR_ROLE with your specific information, either the ACCOUNTADMIN or a custom SpotApps role.
 
