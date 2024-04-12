@@ -75,6 +75,9 @@ Run these commands as the ACCOUNTADMIN. If you don’t have account admin access
 
 Make sure to be consistent in your SQL script. If you use double quotes as object identifiers for one object, you must use double quotes for all objects. If you run all the commands at once, use semicolons to separate the commands.
 
+[Option 1 SQL Commands](https://github.com/thoughtspot/tmlblock-snowflake_perf_and_consumption/blob/main/Option1.sql)
+
+
 #### Option 2
 
 The following SQL commands grant permission for the role you use in your Snowflake connection to use the Snowflake database. They prepare you to query on the system database directly. Replace YOUR_ROLE with your specific information, either the ACCOUNTADMIN or a custom SpotApps role.
@@ -82,6 +85,8 @@ The following SQL commands grant permission for the role you use in your Snowfla
 Run these commands as the ACCOUNTADMIN. If you don’t have account admin access, you can create a custom role with the permissions required to execute tasks. See the Snowflake documentation.
 
 Make sure to be consistent in your SQL script. If you use double quotes as object identifiers for one object, you must use double quotes for all objects. If you run all the commands at once, use semicolons to separate the commands.
+
+[Option 2 SQL Commands](https://github.com/thoughtspot/tmlblock-snowflake_perf_and_consumption/blob/main/Option2.sql)
 
 
 ## Connect Thoughtspot and Snowflake
