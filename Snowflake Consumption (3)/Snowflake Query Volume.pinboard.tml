@@ -1,0 +1,350 @@
+pinboard:
+  name: Snowflake Query Volume
+  description: "Volume analysis of queries with a focus on identifying if the queries were generated as part of TS indexing, where queued or leveraged cloud services. Recommend extending query timeout with URL parameter \nhttps://[ipaddress]/?queryDeadlineMs=300000/#/"
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: TS Indexed Queries
+      description: ratio of index queries
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "[Query Count] [TS Index Query Type]"
+      answer_columns:
+      - name: TS Index Query Type
+      - name: Query Count
+      table:
+        table_columns:
+        - column_id: TS Index Query Type
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - TS Index Query Type
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"TS Index Query Type\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: TS Index Query Type
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - TS Index Query Type
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"Query Count\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"e866c034-8036-4fba-8223-d648ee93ebc3\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"777722ed-6825-4b05-b9e0-fc410d3985ef\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TS Index Query Type\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"indexing\",\"color\": \"#F9B3B9\"},{\"serieName\": \"non-indexing\",\"color\": \"#BEC6D0\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"indexing\",\"color\": \"#48D1E0\"},{\"serieName\": \"non-indexing\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_2
+    answer:
+      name: Cloud Service Cache
+      description: ratio of cached queries
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "[Query Count] [Cloud Service Type]"
+      answer_columns:
+      - name: Query Count
+      - name: Cloud Service Type
+      table:
+        table_columns:
+        - column_id: Cloud Service Type
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - Cloud Service Type
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Cloud Service Type\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: Cloud Service Type
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - Cloud Service Type
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"Query Count\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"aa863030-b22b-44be-8688-231ae6abc25d\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"b9ac0f25-e11f-419e-afc0-bb3c6bf39b22\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Cloud Service Type\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"cloud\",\"color\": \"#47515F\"},{\"serieName\": \"non-cloud\",\"color\": \"#BEC6D0\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"cloud\",\"color\": \"#48D1E0\"},{\"serieName\": \"non-cloud\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_3
+    answer:
+      name: Queued Query Status
+      description: ratio of Queued Queries
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "[Query Count] [Queued Query Status]"
+      answer_columns:
+      - name: Query Count
+      - name: Queued Query Status
+      table:
+        table_columns:
+        - column_id: Queued Query Status
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - Queued Query Status
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Queued Query Status\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: Queued Query Status
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - Queued Query Status
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"Query Count\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"113892b5-a7dd-4341-9d1f-6ae917fe8148\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"ee7dbe6c-afec-4b39-a752-dcaab802b079\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Queued Query Status\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"query in queue\",\"color\": \"#F9B3B9\"},{\"serieName\": \"query not in queue\",\"color\": \"#BEC6D0\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"query in queue\",\"color\": \"#48D1E0\"},{\"serieName\": \"query not in queue\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_4
+    answer:
+      name: Top 15 Query Count by Error Message
+      description: Top 15 Query Count by Error Message
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 15 [Query Count] [Error Code] != '{null}' [Error Message] sort by [Query Count] descending"
+      answer_columns:
+      - name: Error Message
+      - name: Query Count
+      table:
+        table_columns:
+        - column_id: Error Message
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - Error Message
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Error Message\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: Error Message
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - Error Message
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"11d78d85-ebe9-4beb-bc04-e2eee0a8256f\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"23575002-533b-49c0-9e76-ceafae53b740\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Error Message\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#F9B3B9\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_5
+    answer:
+      name: Top 15 Query Count by Role Name
+      description: Top 15 Query Count by Role Name
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 15 [Query Count] sort by [Query Count] descending [Role Name]"
+      answer_columns:
+      - name: Query Count
+      - name: Role Name
+      table:
+        table_columns:
+        - column_id: Role Name
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - Role Name
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Role Name\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: Role Name
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - Role Name
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"7b64579b-61ce-4b23-afbf-0378f9513e53\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"c283ce41-5a04-4642-a65f-c3023767dee7\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Role Name\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#71a1f4\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_6
+    answer:
+      name: Top 15 Query Count by Warehouse Size
+      description: Top 15 Query Count by Warehouse Size
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 15 [Query Count] sort by [Query Count] descending [Warehouse Size]"
+      answer_columns:
+      - name: Query Count
+      - name: Warehouse Size
+      table:
+        table_columns:
+        - column_id: Warehouse Size
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - Warehouse Size
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Warehouse Size\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: Warehouse Size
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - Warehouse Size
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"57460878-2830-468c-8eae-065162bde280\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"d3c84bbd-689f-444c-95cf-56a3c92e18d1\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Warehouse Size\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#71a1f4\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_7
+    answer:
+      name: Query Volume by ThoughtSpot Query
+      description: flag to estimate which queries are initiated by ThoughtSpot indexing and search
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "[Start Time] [Start Time].monthly [Query Count] [TS Index Query Type]"
+      answer_columns:
+      - name: TS Index Query Type
+      - name: Query Count
+      - name: Month(Start Time)
+      table:
+        table_columns:
+        - column_id: Month(Start Time)
+          headline_aggregation: MIN-MAX
+        - column_id: TS Index Query Type
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - Month(Start Time)
+        - TS Index Query Type
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Month(Start Time)\",\"columnProperty\": {}},{\"columnId\": \"TS Index Query Type\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: STACKED_AREA
+        chart_columns:
+        - column_id: Month(Start Time)
+        - column_id: TS Index Query Type
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - Month(Start Time)
+          "y":
+          - Query Count
+          color:
+          - TS Index Query Type
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"c1a0a321-43fd-459c-bdc4-f7f91ec50848\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"aa13ce1f-632b-40e5-8528-7ff904e68dc3\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Month(Start Time)\"]}}],\"seriesColors\": [{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"indexing\",\"color\": \"#F9B3B9\"},{\"serieName\": \"non-indexing\",\"color\": \"#BEC6D0\"}],\"systemSeriesColors\": [{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"indexing\",\"color\": \"#48D1E0\"},{\"serieName\": \"non-indexing\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_8
+    answer:
+      name: Top 15 Query Count by User Name
+      description: Top 15 Query Count by User Name
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 15 [Query Count] sort by [Query Count] descending [User Name]"
+      answer_columns:
+      - name: Query Count
+      - name: User Name
+      table:
+        table_columns:
+        - column_id: User Name
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - User Name
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"User Name\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: User Name
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - User Name
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"f93c798d-d737-49a4-9090-da69fba09605\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"f389048a-29a6-4511-bc94-eedfce1fd037\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"User Name\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#71a1f4\"}],\"systemSeriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_9
+    answer:
+      name: TS Index Type
+      description: ratio of type of indexed queries
+      tables:
+      - id: Query History
+        name: Query History
+      formulas:
+      - id: TS Index Type
+        name: TS Index Type
+        expr: "if ( [Flag TS Index Query (Count)] ) then 'count values' else if ( [Flag TS Index Query (Values)] ) then 'unique values' else null"
+      search_query: "[Query Count] [TS Index Type] [TS Index Type] != '{null}'"
+      answer_columns:
+      - name: Query Count
+      - name: TS Index Type
+      table:
+        table_columns:
+        - column_id: TS Index Type
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Query Count
+          headline_aggregation: SUM
+        ordered_column_ids:
+        - TS Index Type
+        - Query Count
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"TS Index Type\",\"columnProperty\": {}},{\"columnId\": \"Query Count\",\"columnProperty\": {}}]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: TS Index Type
+        - column_id: Query Count
+        axis_configs:
+        - x:
+          - TS Index Type
+          "y":
+          - Query Count
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"Query Count\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"507c26cc-e2ca-4cf1-80e4-7c1173ee6da2\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Query Count\"],\"isOpposite\": false}},{\"id\": \"a2a5e80e-e336-4876-b2ff-31bc0328cec7\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TS Index Type\"]}}],\"seriesColors\": [{\"serieName\": \"Query Count\",\"color\": \"#2E75F0\"},{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"count values\",\"color\": \"#BEC6D0\"},{\"serieName\": \"unique values\",\"color\": \"#47515F\"}],\"systemSeriesColors\": [{\"serieName\": \"count values\",\"color\": \"#f9b3b9\"},{\"serieName\": \"unique values\",\"color\": \"#f47e89\"}]}"
+      display_mode: CHART_MODE
+  layout:
+    tiles:
+    - visualization_id: Viz_1
+      size: SMALL
+    - visualization_id: Viz_9
+      size: SMALL
+    - visualization_id: Viz_2
+      size: SMALL
+    - visualization_id: Viz_3
+      size: SMALL
+    - visualization_id: Viz_7
+      size: LARGE_SMALL
+    - visualization_id: Viz_6
+      size: MEDIUM
+    - visualization_id: Viz_4
+      size: MEDIUM
+    - visualization_id: Viz_5
+      size: MEDIUM
+    - visualization_id: Viz_8
+      size: MEDIUM

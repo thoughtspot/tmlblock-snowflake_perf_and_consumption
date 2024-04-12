@@ -1,0 +1,295 @@
+pinboard:
+  name: Snowflake Query Credit Costs
+  description: "estimation of credit consumption for databases, roles and warehouses. \n\nRecommend extending query timeout with URL parameter \n\nhttps://[ipaddress]/?queryDeadlineMs=300000/#/"
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: Top 10 Query Est. Credits by Database Name
+      description: "Top 10 Query Est. Credits by Database Name.\_credits are estimated based upon warehouse size and credit ratio:. I.e. 1,2,4,8,16,32,64,128"
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 10 [Query Est. Credits] [Database ID] [Database Name] sort by [Query Est. Credits] descending"
+      answer_columns:
+      - name: Total Query Est. Credits
+      - name: Database Name
+      - name: Database ID
+      table:
+        table_columns:
+        - column_id: Database ID
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Database Name
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Total Query Est. Credits
+          headline_aggregation: TABLE_AGGR
+        ordered_column_ids:
+        - Database ID
+        - Database Name
+        - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Database ID\",\"columnProperty\": {}},{\"columnId\": \"Database Name\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Credits\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: Database ID
+        - column_id: Database Name
+        - column_id: Total Query Est. Credits
+        axis_configs:
+        - x:
+          - Database Name
+          "y":
+          - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"isZoomed\": false,\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"c45c3e91-d454-452a-aa73-52ab6e6ff514\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Credits\"],\"isOpposite\": false}},{\"id\": \"274b4a4b-85fa-4820-b99a-382ae6584eba\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Database Name\"]}}],\"seriesColors\": [{\"serieName\": \"Total Query Est. Credits\",\"color\": \"#71a1f4\"}],\"systemSeriesColors\": [{\"serieName\": \"Total Query Est. Credits\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_2
+    answer:
+      name: Total Query Est. Credits by Database Name
+      description: Total Query Est. Credits by Database Name and Monthly
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "[Query Est. Credits] [Start Time] [Start Time].monthly [Database Name] [Database Name] in ( top 10 [Query Count] [Database Name] )"
+      answer_columns:
+      - name: Month(Start Time)
+      - name: Total Query Est. Credits
+      - name: Database Name
+      table:
+        table_columns:
+        - column_id: Month(Start Time)
+          headline_aggregation: MIN-MAX
+        - column_id: Database Name
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Total Query Est. Credits
+          headline_aggregation: TABLE_AGGR
+        ordered_column_ids:
+        - Month(Start Time)
+        - Database Name
+        - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Month(Start Time)\",\"columnProperty\": {}},{\"columnId\": \"Database Name\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Credits\",\"columnProperty\": {}}]}"
+      chart:
+        type: STACKED_AREA
+        chart_columns:
+        - column_id: Month(Start Time)
+        - column_id: Database Name
+        - column_id: Total Query Est. Credits
+        axis_configs:
+        - x:
+          - Month(Start Time)
+          "y":
+          - Total Query Est. Credits
+          color:
+          - Database Name
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"c5e24bdd-c50c-4c6f-accc-2c39fffe33f4\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Credits\"],\"isOpposite\": false}},{\"id\": \"ea560247-5584-43a5-a0e6-44c47ee2033f\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Month(Start Time)\"]}}],\"systemSeriesColors\": [{\"serieName\": \"development\",\"color\": \"#8C62F5\"},{\"serieName\": \"nebuladev\",\"color\": \"#56D3A8\"},{\"serieName\": \"pc_fivetran_db\",\"color\": \"#06BF7F\"},{\"serieName\": \"pmmdb\",\"color\": \"#FCD977\"},{\"serieName\": \"retail_japan\",\"color\": \"#FCC838\"},{\"serieName\": \"snowflake\",\"color\": \"#82DFE9\"},{\"serieName\": \"spotapps_db\",\"color\": \"#48D1E0\"},{\"serieName\": \"supplychain_main\",\"color\": \"#71A1F4\"},{\"serieName\": \"test\",\"color\": \"#2E75F0\"},{\"serieName\": \"connector_servicenow\",\"color\": \"#8C62F5\"},{\"serieName\": \"dataspot_test_db\",\"color\": \"#56D3A8\"},{\"serieName\": \"dest_db_inc\",\"color\": \"#06BF7F\"},{\"serieName\": \"google_analytics\",\"color\": \"#FCD977\"},{\"serieName\": \"jira\",\"color\": \"#FCC838\"},{\"serieName\": \"servicenow\",\"color\": \"#71A1F4\"},{\"serieName\": \"servicenow_demo\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_3
+    answer:
+      name: Total Est. Credits by Index Type
+      description: Total Est. Credits by Index Type and Monthly Time
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "[Query Est. Credits] [Start Time] [Start Time].monthly [TS Index Query Type]"
+      answer_columns:
+      - name: TS Index Query Type
+      - name: Month(Start Time)
+      - name: Total Query Est. Credits
+      table:
+        table_columns:
+        - column_id: Month(Start Time)
+          headline_aggregation: MIN-MAX
+        - column_id: TS Index Query Type
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Total Query Est. Credits
+          headline_aggregation: TABLE_AGGR
+        ordered_column_ids:
+        - Month(Start Time)
+        - TS Index Query Type
+        - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Month(Start Time)\",\"columnProperty\": {}},{\"columnId\": \"TS Index Query Type\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Credits\",\"columnProperty\": {}}]}"
+      chart:
+        type: STACKED_AREA
+        chart_columns:
+        - column_id: Month(Start Time)
+        - column_id: TS Index Query Type
+        - column_id: Total Query Est. Credits
+        axis_configs:
+        - x:
+          - Month(Start Time)
+          "y":
+          - Total Query Est. Credits
+          color:
+          - TS Index Query Type
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"showStackedLabels\": false},\"axisProperties\": [{\"id\": \"76e40a2a-1380-48e3-b668-60e622b0e457\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Credits\"],\"isOpposite\": false}},{\"id\": \"582d51b1-b1b3-4d5d-a1af-1275c4726465\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Month(Start Time)\"]}}],\"seriesColors\": [{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"indexing\",\"color\": \"#F9B3B9\"},{\"serieName\": \"non-indexing\",\"color\": \"#BEC6D0\"}],\"systemSeriesColors\": [{\"serieName\": \"false\",\"color\": \"#bec6d0\"},{\"serieName\": \"true\",\"color\": \"#f9b3b9\"},{\"serieName\": \"indexing\",\"color\": \"#48D1E0\"},{\"serieName\": \"non-indexing\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_4
+    answer:
+      name: Top 10 Query Est. Credits by Role
+      description: "Top 10 Query Est. Credits by Role and\_credits are estimated based upon warehouse size and credit ratio:. I.e. 1,2,4,8,16,32,64,128"
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 10 [Query Est. Credits] sort by [Query Est. Credits] descending [Role Name]"
+      answer_columns:
+      - name: Role Name
+      - name: Total Query Est. Credits
+      table:
+        table_columns:
+        - column_id: Role Name
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Total Query Est. Credits
+          headline_aggregation: TABLE_AGGR
+        ordered_column_ids:
+        - Role Name
+        - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"Role Name\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Credits\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: Role Name
+        - column_id: Total Query Est. Credits
+        axis_configs:
+        - x:
+          - Role Name
+          "y":
+          - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"cc81bcfe-7346-4611-97d8-a70b9fceefe1\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Credits\"],\"isOpposite\": false}},{\"id\": \"fbc23402-5d4a-45fa-9f6a-c3e604d14c01\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Role Name\"]}}],\"seriesColors\": [{\"serieName\": \"Total Query Est. Credits\",\"color\": \"#71a1f4\"}],\"systemSeriesColors\": [{\"serieName\": \"Total Query Est. Credits\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  - id: Viz_5
+    answer:
+      name: Top 50 Costly Queries
+      description: Top 50 Costly Queries for the last 4 weeks
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 50 by [Query Est. Credits] [Start Time].'last 4 weeks' [Start Time].'this week' [Query ID] [Query Type] [Query Est. Costs] [Query Est. Credits] [Warehouse Size] [Database Name] [Schema Name] [Query Text] sort by [Query Est. Credits] descending [Start Time] [Start Time].monthly"
+      answer_columns:
+      - name: Total Query Est. Credits
+      - name: Warehouse Size
+      - name: Query ID
+      - name: Database Name
+      - name: Query Text
+      - name: Month(Start Time)
+      - name: Total Query Est. Costs
+      - name: Schema Name
+      - name: Query Type
+      table:
+        table_columns:
+        - column_id: Query ID
+          show_headline: false
+        - column_id: Query Type
+          show_headline: false
+        - column_id: Warehouse Size
+          show_headline: false
+        - column_id: Database Name
+          show_headline: false
+        - column_id: Schema Name
+          show_headline: false
+        - column_id: Query Text
+          show_headline: false
+        - column_id: Month(Start Time)
+          show_headline: false
+        - column_id: Total Query Est. Credits
+          show_headline: false
+        - column_id: Total Query Est. Costs
+          show_headline: false
+        ordered_column_ids:
+        - Query ID
+        - Query Type
+        - Warehouse Size
+        - Database Name
+        - Schema Name
+        - Query Text
+        - Month(Start Time)
+        - Total Query Est. Credits
+        - Total Query Est. Costs
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Query ID\",\"width\": 231.0},{\"columnId\": \"Query Text\",\"width\": 298.0},{\"columnId\": \"Total Query Est. Credits\",\"width\": 138.0},{\"columnId\": \"Total Query Est. Costs\",\"width\": 127.0}],\"wrapTableHeader\": true,\"showTableFooter\": false,\"columnProperties\": [{\"columnId\": \"Query ID\",\"columnProperty\": {}},{\"columnId\": \"Query Type\",\"columnProperty\": {}},{\"columnId\": \"Warehouse Size\",\"columnProperty\": {}},{\"columnId\": \"Database Name\",\"columnProperty\": {}},{\"columnId\": \"Schema Name\",\"columnProperty\": {}},{\"columnId\": \"Query Text\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Credits\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Costs\",\"columnProperty\": {}}]}"
+      chart:
+        type: COLUMN
+        chart_columns:
+        - column_id: Query ID
+        - column_id: Query Type
+        - column_id: Warehouse Size
+        - column_id: Database Name
+        - column_id: Schema Name
+        - column_id: Query Text
+        - column_id: Month(Start Time)
+        - column_id: Total Query Est. Credits
+        - column_id: Total Query Est. Costs
+        axis_configs:
+        - x:
+          - Query Text
+          "y":
+          - Total Query Est. Credits
+          - Total Query Est. Costs
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_OFF\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"1c0c394f-3168-4574-bd4c-cd25edbc0270\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Credits\"],\"isOpposite\": false}},{\"id\": \"bc414988-3d3a-4187-8fc7-73ad52dbe988\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Costs\"],\"isOpposite\": true}},{\"id\": \"9f7888f6-4a3d-4614-8ce4-8cbdefeda006\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Query Text\"]}}],\"systemSeriesColors\": [{\"serieName\": \"2e1c7b73-f99d-4d63-9b7e-bb10dbbd0d2c\",\"color\": \"#2E75F0\"}]}"
+      display_mode: TABLE_MODE
+  - id: Viz_6
+    answer:
+      name: Top 10 Query Est. Credits by Warehouse Name
+      description: "Top 10 Query Est. Credits by Warehouse Name.\_credits are estimated based upon warehouse size and credit ratio:. I.e. 1,2,4,8,16,32,64,128"
+      tables:
+      - id: Query History
+        name: Query History
+      search_query: "top 10 [Query Est. Credits] [Warehouse Name] [Warehouse ID] sort by [Query Est. Credits] descending [Warehouse Name] != '{null}'"
+      answer_columns:
+      - name: Total Query Est. Credits
+      - name: Warehouse Name
+      - name: Warehouse ID
+      table:
+        table_columns:
+        - column_id: Warehouse Name
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Warehouse ID
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Total Query Est. Credits
+          headline_aggregation: TABLE_AGGR
+        ordered_column_ids:
+        - Warehouse Name
+        - Warehouse ID
+        - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"columnProperties\": [{\"columnId\": \"1e338125-5bf5-44aa-89a2-36fef6e88dfa\",\"columnProperty\": {}},{\"columnId\": \"f016088f-2679-4ea7-9032-45d3074f9f0c\",\"columnProperty\": {}},{\"columnId\": \"Total Query Est. Credits\",\"columnProperty\": {}}]}"
+      chart:
+        type: BAR
+        chart_columns:
+        - column_id: Warehouse Name
+        - column_id: Warehouse ID
+        - column_id: Total Query Est. Credits
+        axis_configs:
+        - x:
+          - Warehouse Name
+          "y":
+          - Total Query Est. Credits
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"axisProperties\": [{\"id\": \"00759bc4-15f9-4852-9e31-0f78a2d4e813\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Query Est. Credits\"],\"isOpposite\": false}},{\"id\": \"0e34c7db-6d29-4789-ba7d-6d277daec4da\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Warehouse Name\"]}}],\"seriesColors\": [{\"serieName\": \"Total Query Est. Credits\",\"color\": \"#71a1f4\"}],\"systemSeriesColors\": [{\"serieName\": \"Total Query Est. Credits\",\"color\": \"#71a1f4\"},{\"serieName\": \"{null}\",\"color\": \"#06BF7F\"},{\"serieName\": \"demo_wh_spotapps\",\"color\": \"#FCC838\"},{\"serieName\": \"dev_wh_spotapps\",\"color\": \"#82DFE9\"},{\"serieName\": \"pc_thoughtspot_wh\",\"color\": \"#48D1E0\"},{\"serieName\": \"servicenow_conn_warehouse\",\"color\": \"#71A1F4\"},{\"serieName\": \"sn_warehouse\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+  filters:
+  - column:
+    - Warehouse Name
+  - column:
+    - Role Name
+  - column:
+    - Database Name
+  layout:
+    tiles:
+    - visualization_id: Viz_4
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_1
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_6
+      size: LARGE_SMALL
+    - visualization_id: Viz_2
+      size: LARGE
+    - visualization_id: Viz_3
+      size: LARGE
+    - visualization_id: Viz_5
+      size: LARGE

@@ -1,0 +1,38 @@
+table:
+  name: STAGES
+  db: AIRBYTE_DB
+  schema: INFORMATION_SCHEMA
+  db_table: STAGES
+  connection:
+    name: Snowflake SpotApp 2024
+  columns:
+  - name: STAGE_NAME
+    db_column_name: STAGE_NAME
+    properties:
+      column_type: ATTRIBUTE
+    db_column_properties:
+      data_type: VARCHAR
+  - name: STAGE_SCHEMA
+    db_column_name: STAGE_SCHEMA
+    properties:
+      column_type: ATTRIBUTE
+    db_column_properties:
+      data_type: VARCHAR
+  - name: STAGE_CATALOG
+    db_column_name: STAGE_CATALOG
+    properties:
+      column_type: ATTRIBUTE
+    db_column_properties:
+      data_type: VARCHAR
+  - name: STAGE_TYPE
+    db_column_name: STAGE_TYPE
+    properties:
+      column_type: ATTRIBUTE
+    db_column_properties:
+      data_type: VARCHAR
+  - name: STAGE_OWNER
+    db_column_name: STAGE_OWNER
+    properties:
+      column_type: ATTRIBUTE
+    db_column_properties:
+      data_type: VARCHAR

@@ -1,0 +1,9 @@
+pinboard:
+  name: Snowflake Database Storage
+  description: "Analysis of monthly storage consumption for databases, Stages"
+  filters:
+  - column:
+    - Database Name
+  - column:
+    - Year
+  layout: {}

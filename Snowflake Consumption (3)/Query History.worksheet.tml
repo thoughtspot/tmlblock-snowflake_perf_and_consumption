@@ -1,0 +1,348 @@
+worksheet:
+  name: Query History
+  description: "The Query History Account Usage view can be used to query Snowflake query history by various dimensions (time range, session, user, warehouse, etc.) within the last 365 days (1 year). Latency for the view may be up to 45 minutes."
+  tables:
+  - name: QUERY_HISTORY
+  table_paths:
+  - id: QUERY_HISTORY_1
+    table: QUERY_HISTORY
+    join_path:
+    - {}
+  formulas:
+  - name: Static Cost per Credit
+    expr: "3"
+  - name: Time Queued Provisioning (secs)
+    expr: "safe_divide ( [QUERY_HISTORY_1::QUEUED_PROVISIONING_TIME] , 1000 )"
+  - name: Flag TS Index Query (Count)
+    expr: "if ( contains ( [QUERY_HISTORY_1::QUERY_TEXT] , 'select approx_count_distinct' ) ) then true else false"
+  - name: Cloud Service Type
+    expr: "if ( isnull ( [QUERY_HISTORY_1::WAREHOUSE_ID] ) ) then 'cloud' else 'non-cloud'"
+  - name: Flag Queued Query
+    expr: "if ( [QUERY_HISTORY_1::QUEUED_REPAIR_TIME] > 0 or [QUERY_HISTORY_1::QUEUED_OVERLOAD_TIME] > 0 or [QUERY_HISTORY_1::QUEUED_PROVISIONING_TIME] > 0 ) then true else false"
+  - name: Queued Query Status
+    expr: "if ( [QUERY_HISTORY_1::QUEUED_REPAIR_TIME] > 0 or [QUERY_HISTORY_1::QUEUED_OVERLOAD_TIME] > 0 or [QUERY_HISTORY_1::QUEUED_PROVISIONING_TIME] > 0 ) then 'query in queue' else 'query not in queue'"
+  - name: Year
+    expr: "year ( [QUERY_HISTORY_1::START_TIME] )"
+  - name: Static Unit of Credit
+    expr: "if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = 'x-small' ) then 1 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = 'small' ) then 2 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = 'medium' ) then 4 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = 'large' ) then 8 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = 'x-large' ) then 16 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = '2x-large' ) then 32 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = '3x-large' ) then 64 else if ( [QUERY_HISTORY_1::WAREHOUSE_SIZE] = '4x-large' ) then 128 else 1"
+  - name: Flag Spilled to Remote Storage
+    expr: "if ( [QUERY_HISTORY_1::BYTES_SPILLED_TO_REMOTE_STORAGE] > 0 ) then 'spilled remote' else 'memory'"
+  - name: Flag TS Index Query
+    expr: "if ( [Flag TS Index Query (Count)] or [Flag TS Index Query (Values)] ) then true else false"
+  - name: Ratio TS Queries
+    expr: "safe_divide ( count_if ( [Flag TS Index Query] , [QUERY_HISTORY_1::QUERY_ID] ) , [Query Count] ) * 100"
+  - name: Ratio Cloud Queries
+    expr: "safe_divide ( count_if ( [Flag Cloud Services] , [QUERY_HISTORY_1::QUERY_ID] ) , [Query Count] ) * 100"
+  - name: Flag Spilled to Local Storage
+    expr: "if ( [QUERY_HISTORY_1::BYTES_SPILLED_TO_LOCAL_STORAGE] > 0 ) then true else false"
+  - name: Start Date
+    expr: "date ( [QUERY_HISTORY_1::START_TIME] )"
+  - name: Time to Execute (secs)
+    expr: "safe_divide ( [QUERY_HISTORY_1::EXECUTION_TIME] , 1000 )"
+  - name: TS Index Query Type
+    expr: "if ( [Flag TS Index Query (Count)] or [Flag TS Index Query (Values)] ) then 'indexing' else 'non-indexing'"
+  - name: Flag TS Index Query (Values)
+    expr: "if ( contains ( [QUERY_HISTORY_1::QUERY_TEXT] , 'true \"ca_3\"' ) ) then true else false"
+  - name: Query Est. Costs
+    expr: "[Query Est. Credits] * [Static Cost per Credit]"
+  - name: Query Est. Credits
+    expr: "safe_divide ( [Time to Execute (secs)] , 360 ) * [Static Unit of Credit]"
+  - name: Quarter
+    expr: "quarter_number ( [QUERY_HISTORY_1::START_TIME] )"
+  - name: Flag Cloud Services
+    expr: "if ( isnull ( [QUERY_HISTORY_1::WAREHOUSE_ID] ) ) then true else false"
+  - name: Time Elapsed (secs)
+    expr: "safe_divide ( [QUERY_HISTORY_1::TOTAL_ELAPSED_TIME] , 1000 )"
+  - name: Ratio Queued Queries
+    expr: "safe_divide ( count_if ( [Flag Queued Query] , [QUERY_HISTORY_1::QUERY_ID] ) , [Query Count] ) * 100"
+  - name: Hour of Day
+    expr: "hour_of_day ( [QUERY_HISTORY_1::START_TIME] )"
+  - name: Month
+    expr: "month ( [QUERY_HISTORY_1::START_TIME] )"
+  - name: Time Queued Overload (secs)
+    expr: "safe_divide ( [QUERY_HISTORY_1::QUEUED_OVERLOAD_TIME] , 1000 )"
+  - name: Avg Scanned from Cache
+    expr: "( [QUERY_HISTORY_1::PERCENTAGE_SCANNED_FROM_CACHE] * 100 )"
+  - name: Query Count
+    expr: "count ( [QUERY_HISTORY_1::QUERY_ID] )"
+  - name: Avg Partitions Scanned
+    expr: "safe_divide ( sum ( [QUERY_HISTORY_1::PARTITIONS_SCANNED] ) , sum ( [QUERY_HISTORY_1::PARTITIONS_TOTAL] ) ) * 100"
+  - name: Time to Compile (secs)
+    expr: "safe_divide ( [QUERY_HISTORY_1::COMPILATION_TIME] , 1000 )"
+  worksheet_columns:
+  - name: Error Message
+    description: "Error message, if the query returned an error"
+    column_id: QUERY_HISTORY_1::ERROR_MESSAGE
+    properties:
+      column_type: ATTRIBUTE
+  - name: Flag Queued Query
+    formula_id: Flag Queued Query
+    properties:
+      column_type: ATTRIBUTE
+  - name: Static Cost per Credit
+    description: static variable to define the cost per credit
+    formula_id: Static Cost per Credit
+    properties:
+      column_type: MEASURE
+      aggregation: AVERAGE
+  - name: Session ID
+    description: Session that executed the statement.
+    column_id: QUERY_HISTORY_1::SESSION_ID
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Year
+    description: Start Time year
+    formula_id: Year
+    properties:
+      column_type: ATTRIBUTE
+  - name: Flag Spilled to Remote Storage
+    description: Flag indicating if query results in memory spilled to remote storage
+    formula_id: Flag Spilled to Remote Storage
+    properties:
+      column_type: ATTRIBUTE
+  - name: TS Index Query Type
+    description: Indicator if the query is generated by ThoughtSpot for indexing purposes
+    formula_id: TS Index Query Type
+    properties:
+      column_type: ATTRIBUTE
+  - name: Avg Partitions Scanned
+    description: Number of micro-partitions scanned divided by Total micro-partitions of all tables included in this query.
+    formula_id: Avg Partitions Scanned
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Query ID
+    description: Internal/system-generated identifier for the SQL statement.
+    column_id: QUERY_HISTORY_1::QUERY_ID
+    properties:
+      column_type: ATTRIBUTE
+  - name: Schema ID
+    description: Internal/system-generated identifier for the schema that was in use.
+    column_id: QUERY_HISTORY_1::SCHEMA_ID
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Flag TS Index Query (Count)
+    description: Indicator if the query is generated by ThoughtSpot for indexing purposes
+    formula_id: Flag TS Index Query (Count)
+    properties:
+      column_type: ATTRIBUTE
+  - name: Flag Spilled to Local Storage
+    description: Flag indicating if query results in memory spilled to local storage
+    formula_id: Flag Spilled to Local Storage
+    properties:
+      column_type: ATTRIBUTE
+  - name: Time to Compile (secs)
+    description: Compilation time (in seconds)
+    formula_id: Time to Compile (secs)
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Quarter
+    description: Start Time quarter
+    formula_id: Quarter
+    properties:
+      column_type: ATTRIBUTE
+  - name: Static Unit of Credit
+    description: static variable to the warehouse credit consumption unit
+    formula_id: Static Unit of Credit
+    properties:
+      column_type: ATTRIBUTE
+  - name: Start Time
+    description: Statement start time (in the UTC time zone)
+    column_id: QUERY_HISTORY_1::START_TIME
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+      calendar: calendar
+  - name: Query Est. Costs
+    description: Estimate costs for the query
+    formula_id: Query Est. Costs
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Time to Execute (secs)
+    description: Execution time (in seconds)
+    formula_id: Time to Execute (secs)
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Ratio TS Queries
+    formula_id: Ratio TS Queries
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Ratio Cloud Queries
+    formula_id: Ratio Cloud Queries
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Warehouse Name
+    description: "Warehouse that the query executed on, if any."
+    column_id: QUERY_HISTORY_1::WAREHOUSE_NAME
+    properties:
+      column_type: ATTRIBUTE
+  - name: Ratio Queued Queries
+    formula_id: Ratio Queued Queries
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: User Name
+    description: User who issued the query.
+    column_id: QUERY_HISTORY_1::USER_NAME
+    properties:
+      column_type: ATTRIBUTE
+  - name: Query Tag
+    description: Query tag set for this statement through the QUERY_TAG session parameter.
+    column_id: QUERY_HISTORY_1::QUERY_TAG
+    properties:
+      column_type: ATTRIBUTE
+  - name: Query Type
+    description: "DML, query, etc. If the query is currently running, or the query failed, then the query type may be UNKNOWN."
+    column_id: QUERY_HISTORY_1::QUERY_TYPE
+    properties:
+      column_type: ATTRIBUTE
+  - name: Role Name
+    description: Role that was active in the session at the time of the query.
+    column_id: QUERY_HISTORY_1::ROLE_NAME
+    properties:
+      column_type: ATTRIBUTE
+  - name: Time Queued Provisioning (secs)
+    description: "Time (in seconds) spent in the warehouse queue, waiting for the warehouse compute resources to provision, due to warehouse creation, resume, or resize."
+    formula_id: Time Queued Provisioning (secs)
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Query Est. Credits
+    description: Estimate credits consumed for the query.
+    formula_id: Query Est. Credits
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Error Code
+    description: "Error code, if the query returned an error"
+    column_id: QUERY_HISTORY_1::ERROR_CODE
+    properties:
+      column_type: ATTRIBUTE
+  - name: Month
+    description: 'Start Time month name '
+    formula_id: Month
+    properties:
+      column_type: ATTRIBUTE
+  - name: Flag Cloud Services
+    formula_id: Flag Cloud Services
+    properties:
+      column_type: ATTRIBUTE
+  - name: Cloud Service Type
+    description: Flag indicating that the query was processed by cloud services layer
+    formula_id: Cloud Service Type
+    properties:
+      column_type: ATTRIBUTE
+  - name: Hour of Day
+    description: Statement start hour of day
+    formula_id: Hour of Day
+    properties:
+      column_type: ATTRIBUTE
+  - name: Database ID
+    description: Internal/system-generated identifier for the database that was in use.
+    column_id: QUERY_HISTORY_1::DATABASE_ID
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Queued Query Status
+    description: Flag indicating that the query was queued
+    formula_id: Queued Query Status
+    properties:
+      column_type: ATTRIBUTE
+  - name: Time Queued Overload (secs)
+    description: "Time (in seconds) spent in the warehouse queue, due to the warehouse being overloaded by the current query workload."
+    formula_id: Time Queued Overload (secs)
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Schema Name
+    description: Schema that was in use at the time of the query.
+    column_id: QUERY_HISTORY_1::SCHEMA_NAME
+    properties:
+      column_type: ATTRIBUTE
+  - name: Query Text
+    description: query text string
+    column_id: QUERY_HISTORY_1::QUERY_TEXT
+    properties:
+      column_type: ATTRIBUTE
+  - name: Flag TS Index Query
+    formula_id: Flag TS Index Query
+    properties:
+      column_type: ATTRIBUTE
+  - name: Time Elapsed (secs)
+    description: Elapsed time (in seconds).
+    formula_id: Time Elapsed (secs)
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Execution Status
+    description: "Execution status for the query: success, fail, incident."
+    column_id: QUERY_HISTORY_1::EXECUTION_STATUS
+    properties:
+      column_type: ATTRIBUTE
+  - name: Query Count
+    description: Count of queries
+    formula_id: Query Count
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Warehouse Type
+    description: Type of the warehouse when this statement executed.
+    column_id: QUERY_HISTORY_1::WAREHOUSE_TYPE
+    properties:
+      column_type: ATTRIBUTE
+  - name: Avg Scanned from Cache
+    description: The percentage of data scanned from the local disk cache. The value ranges from 0.0 to 1.0. Multiply by 100 to get a true percentage.
+    formula_id: Avg Scanned from Cache
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+  - name: Warehouse ID
+    description: Internal/system-generated identifier for the warehouse that was used.
+    column_id: QUERY_HISTORY_1::WAREHOUSE_ID
+    properties:
+      column_type: ATTRIBUTE
+      index_type: DONT_INDEX
+  - name: Start Date
+    description: Statement start date (in the UTC time zone)
+    formula_id: Start Date
+    properties:
+      column_type: ATTRIBUTE
+      calendar: calendar
+      format_pattern: dd/MM/yyyy
+  - name: Rows Produced
+    description: Number of rows produced by this statement.
+    column_id: QUERY_HISTORY_1::ROWS_PRODUCED
+    properties:
+      column_type: MEASURE
+      aggregation: SUM
+      index_type: DONT_INDEX
+  - name: Database Name
+    description: Database that was in use at the time of the query.
+    column_id: QUERY_HISTORY_1::DATABASE_NAME
+    properties:
+      column_type: ATTRIBUTE
+  - name: Warehouse Size
+    description: Size of the warehouse when this statement executed.
+    column_id: QUERY_HISTORY_1::WAREHOUSE_SIZE
+    properties:
+      column_type: ATTRIBUTE
+  - name: Flag TS Index Query (Values)
+    description: Indicator if the query is generated by ThoughtSpot for indexing purposes
+    formula_id: Flag TS Index Query (Values)
+    properties:
+      column_type: ATTRIBUTE
+  properties:
+    is_bypass_rls: false
+    join_progressive: true
