@@ -26,50 +26,62 @@ snowflake_tmlblocks_liveboards.zip
 - Snowflake Warehouse Consumption: which warehouses are consuming credits?
 - Snowflake Storage
 
-# Snowflake Performance and Consumption SpotApp - Prerequisites
 
-Before deploying the Snowflake Performance and Consumption SpotApp, ensure the following prerequisites are met:
+# Prerequisites
 
-## Review and Sync Data
+Before you can deploy the Snowflake Performance and Consumption SpotApp, you must complete the following prerequisites:
 
-- **Review Required Data**: Confirm that your columns match the required column type listed in the SpotApp schema.
-- **Sync Data**: Sync all necessary tables and columns from Snowflake to your cloud data warehouse (CDW). While it's possible to sync only required tables and columns, ThoughtSpot recommends syncing all tables and columns for comprehensive integration.
+- **Review the required tables and columns for the SpotApp.**
+  
+- **Ensure that your columns match the required column type listed in the schema for your SpotApp.**
+  
+- **Sync all tables and columns from Snowflake to your cloud data warehouse.** You can sync only the required tables and columns, but ThoughtSpot recommends syncing all tables and columns from Snowflake to your CDW. The columns can be Snowflake’s out-of-the-box columns, or any custom columns that you are using instead of the out-of-the-box columns.
+  
+- **If you are using an ETL/ELT tool or working with another team in your organization to move data, our recommendation is that you sync all columns from the tables listed in the SpotApp.**
 
-## Credentials and Permissions
+- **Obtain credentials and SYSADMIN privileges to connect to your Snowflake environment.** Your Snowflake environment must contain the data you would like ThoughtSpot to use to create Answers, Liveboards, and Worksheets. Refer to the connection reference for Snowflake for information about required credentials.
+  
+- **The connection name for each new SpotApp must be unique.**
+  
+- **ACCOUNTADMIN access to Snowflake.**
+  
+- **Access to the SNOWFLAKE database in your Snowflake environment.**
+  
+- **Access to the following Snowflake tables in your Snowflake environment.** Refer to Snowflake Performance and Consumption SpotApp schema for more details.
+  - `DATABASE_STORAGE_USAGE_HISTORY`
+  - `QUERY_HISTORY`
+  - `STAGES`
+  - `STORAGE_USAGE`
+  - `WAREHOUSE_METERING_HISTORY`
 
-- **Snowflake Credentials**: Obtain credentials and SYSADMIN privileges to access your Snowflake environment which should contain the data used by ThoughtSpot to create Answers, Liveboards, and Worksheets.
-- **Unique Connection Name**: Each SpotApp connection must have a unique name.
-- **Access Requirements**:
-  - ACCOUNTADMIN access to Snowflake.
-  - Access to the SNOWFLAKE database in your Snowflake environment.
-  - Access to specific Snowflake tables: `DATABASE_STORAGE_USAGE_HISTORY`, `QUERY_HISTORY`, `STAGES`, `STORAGE_USAGE`, `WAREHOUSE_METERING_HISTORY`.
+- **Run the required SQL commands in your cloud data warehouse.** Refer to Run SQL commands. Note that you have two options to set up the SpotApp; only choose one of the options.
 
-## SQL Setup
+## Run SQL commands
 
-You can set up the SpotApp using one of two options. Run the required SQL commands in your cloud data warehouse based on your chosen option:
+You can set up the SpotApp in one of two ways:
 
-### Option 1: Fast Performance
+### Option 1: Copy the data from the SNOWFLAKE database to a different database using Snowflake tasks.
+This option has faster performance and a customizable cost. Refer to Option 1 SQL commands.
 
-This option involves copying data from the SNOWFLAKE database to a different database using Snowflake tasks.
+### Option 2: Query on the system database directly.
+This option has slower performance and may be more expensive. Refer to Option 2 SQL commands.
 
-#### SQL Commands for Option 1
+#### Option 1
 
-```sql
-CREATE DATABASE "SNOWFLAKE_USAGE_TS";
-CREATE SCHEMA "SNOWFLAKE_USAGE_TS"."SNOWFLAKE";
--- Add tasks for each table like QUERY_HISTORY, WAREHOUSE_METERING_HISTORY, etc.
--- Replace <YOUR_WAREHOUSE> with your specific information.
+The following SQL commands grant permission for the role you use in your Snowflake connection to use the Snowflake database. They create a separate database and schema for the data in the Snowflake database, and create the tables with the data. Then, they grant permission for the role you use in your Snowflake connection to use the Snowflake database. Replace `<YOUR_ROLE>` and `<YOUR_WAREHOUSE>` with your specific information. The role should be either ACCOUNTADMIN or a custom SpotApps role. You can also modify the schedule. The following commands set the schedule to refresh the table data monthly. Changing the schedule may have performance and cost implications.
 
-### Option 2: Direct Query
+ThoughtSpot recommends you create the database and schema with the suggested names, using the first two commands in the SQL script. However, you can also use your own names. If you use different names, you must replace ThoughtSpot’s suggested names with the names you used.
+Run these commands as the ACCOUNTADMIN. If you don’t have account admin access, you can create a custom role with the permissions required to execute tasks. See the Snowflake documentation.
 
-This option involves querying the system database directly, which may be slower and more expensive.
+Make sure to be consistent in your SQL script. If you use double quotes as object identifiers for one object, you must use double quotes for all objects. If you run all the commands at once, use semicolons to separate the commands.
 
-#### SQL Commands for Option 2
+#### Option 2
 
-```sql
-GRANT USAGE ON DATABASE "SNOWFLAKE" TO ROLE <YOUR_ROLE>;
-GRANT USAGE ON SCHEMA "SNOWFLAKE"."ACCOUNT_USAGE" TO ROLE <YOUR_ROLE>;
--- Add SELECT permissions for each required table.
+The following SQL commands grant permission for the role you use in your Snowflake connection to use the Snowflake database. They prepare you to query on the system database directly. Replace YOUR_ROLE with your specific information, either the ACCOUNTADMIN or a custom SpotApps role.
+
+Run these commands as the ACCOUNTADMIN. If you don’t have account admin access, you can create a custom role with the permissions required to execute tasks. See the Snowflake documentation.
+
+Make sure to be consistent in your SQL script. If you use double quotes as object identifiers for one object, you must use double quotes for all objects. If you run all the commands at once, use semicolons to separate the commands.
 
 
 ## Connect Thoughtspot and Snowflake
