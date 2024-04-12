@@ -1,24 +1,30 @@
 # Snowflake Performance & Consumption Analytics TML Blocks
-Drill into Snowflake query performance, credit consumption, and usage trends on Thoughtspot. Content includes templated worksheets and visualizations based on Snowflake data. 
+
+SpotApps are ThoughtSpot’s out-of-the-box solution templates built for specific use cases and data sources. They are built on ThoughtSpot Modeling Language (TML) Blocks, which are pre-built pieces of code that are easy to download and implement directly from the product.
+
+The Snowflake Performance and Consumption SpotApp mimics the Snowflake data model. When you deploy it, ThoughtSpot creates several Worksheets, Answers, and Liveboards, based on your Snowflake data in your cloud data warehouse.
+
+Use the Snowflake Performance and Consumption SpotApp to manage Snowflake costs and investigate query performance. Track how and where your users consume credits, and triage and resolve any performance bottlenecks.
 
 # Artifacts 
 
 ## Worksheets 
 snowflake_tmlblocks_worksheets.zip
-- Query History
 - Stage Analysis
 - Database Storage History
-- Storage Usage
+- Database Storage Usage
 - Warehouse Metering History
+- Storage Usage
 
 ## Liveboards 
-snowflake_tmlblocks_liveboardss.zip
+snowflake_tmlblocks_liveboards.zip
 - Snowflake Query Volume: are queries TS Index queries, queued, using cloud services?
 - Snowflake Query Performance: what is the latency of queries?
 - Snowflake Query Credit Costs: identify potentially expensive queries?
 - Snowflake Stages: meta data information for stages? I.e. owners, databases.
-- Snowflake Storage: how is storage being consumed and estimated costs?
+- Snowflake Database Storage: how is storage being consumed and estimated costs?
 - Snowflake Warehouse Consumption: which warehouses are consuming credits?
+- Snowflake Storage
 
 # Installation Instructions 
 
