@@ -15,7 +15,6 @@ Use the Snowflake Performance and Consumption SpotApp to manage Snowflake costs 
 - Storage Usage
 
 ## Liveboards 
-snowflake_tmlblocks_liveboards.zip
 - Snowflake Query Volume: are queries TS Index queries, queued, using cloud services?
 - Snowflake Query Performance: what is the latency of queries?
 - Snowflake Query Credit Costs: identify potentially expensive queries?
@@ -96,7 +95,7 @@ Log into your ThoughtSpot instance and create an Embrace connection to each of t
 - WAREHOUSE_METERING_HISTORY
 
 ## Import TML Blocks 
-1) Download tml files ([Snowflake Consumption TML Files.zip](https://github.com/thoughtspot/tmlblock-snowflake_perf_and_consumption/blob/main/Snowflake%20Consumption%20TML%)
+1) Download tml files ([Snowflake Consumption TML Files.zip](https://github.com/thoughtspot/tmlblock-snowflake_perf_and_consumption/blob/main/Snowflake%20Consumption%20TML% )
 2) Import the TML for the worksheets and verify that it has all been imported without any errors.
 3) Afterwards, import the TML for the liveboards and verify that it has all been imported without any errors.
 
