@@ -1,4 +1,0 @@
-pinboard:
-  name: Snowflake Stages
-  description: "Stage metadata analysis, such as database, schema and owners"
-  layout: {}
